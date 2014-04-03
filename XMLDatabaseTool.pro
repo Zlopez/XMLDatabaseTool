@@ -12,9 +12,11 @@ TARGET = XMLDatabaseTool
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += main.cpp \
+    mainwindow.cpp \
+    xmlio.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    xmlio.h
 
 FORMS    += mainwindow.ui
