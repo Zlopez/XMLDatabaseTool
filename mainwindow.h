@@ -15,6 +15,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void onNewTableActionClicked();
+    void createNewTable(QString,int);
+
 private:
     Ui::MainWindow *ui;
 };

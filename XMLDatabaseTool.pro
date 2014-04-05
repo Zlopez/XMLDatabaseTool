@@ -14,9 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     mainwindow.cpp \
-    xmlio.cpp
+    xmlio.cpp \
+    newtabledialog.cpp
 
 HEADERS  += mainwindow.h \
-    xmlio.h
+    xmlio.h \
+    newtabledialog.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    newtabledialog.ui
