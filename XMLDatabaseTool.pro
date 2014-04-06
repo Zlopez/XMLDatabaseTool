@@ -15,11 +15,15 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     xmlio.cpp \
-    newtabledialog.cpp
+    newtabledialog.cpp \
+    dbtablemodel.cpp \
+    xmltable.cpp
 
 HEADERS  += mainwindow.h \
     xmlio.h \
-    newtabledialog.h
+    newtabledialog.h \
+    dbtablemodel.h \
+    xmltable.h
 
 FORMS    += mainwindow.ui \
     newtabledialog.ui
