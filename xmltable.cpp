@@ -57,7 +57,7 @@ void XMLTable::setData(int row, int col, QString &data)
  */
 void XMLTable::addColumn()
 {
-	columns.append("column" + (columns.count() + 1));
+	columns.append("column" + QString(columns.count() + 1));
 }
 
 /**
@@ -103,4 +103,13 @@ int XMLTable::getColCount()
 int XMLTable::getRowCount()
 {
 	return data.size();
+}
+
+/**
+ * @brief Adds new row to table
+ */
+void XMLTable::addRow()
+{
+	QVector<QString> row(columns.size());
+	this->data.append(row);
 }

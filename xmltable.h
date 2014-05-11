@@ -23,6 +23,7 @@ public:
 	~XMLTable();
 	int getRowCount();
 	int getColCount();
+	void addRow();
 
 private:
 	QVector<QString> columns;
