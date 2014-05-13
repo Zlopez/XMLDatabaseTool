@@ -25,7 +25,7 @@ DbTableModel::DbTableModel(QObject *parent, QString *name,int size) :
 int DbTableModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return table->getRowCount();
+    return table->getRowCount();
 }
 
 /**
@@ -36,7 +36,7 @@ int DbTableModel::rowCount(const QModelIndex &parent) const
 int DbTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return table->getColCount();
+    return table->getColCount();
 }
 
 /**
@@ -47,8 +47,10 @@ int DbTableModel::columnCount(const QModelIndex &parent) const
  */
 QVariant DbTableModel::data(const QModelIndex &index, int role) const
 {
-	Q_UNUSED(role);
-	return table->getData(index.row(),index.column());
+    if(role == Qt::DisplayRole)
+        return table->getData(index.row(),index.column());
+
+    return QVariant();
 }
 
 /**
@@ -60,13 +62,17 @@ QVariant DbTableModel::data(const QModelIndex &index, int role) const
  */
 QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	Q_UNUSED(role);
-	if(orientation==Qt::Horizontal)
-	{
-		return table->getColumnName(section);
-	}
-	else
-	{
-		return QString(section);
-	}
+    if(role == Qt::DisplayRole)
+    {
+        if(orientation == Qt::Horizontal)
+        {
+            return table->getColumnName(section);
+        }
+        else
+        {
+            return section;
+        }
+    }
+
+    return QVariant();
 }
