@@ -1,13 +1,31 @@
 #include "xmltable.h"
+#include <QVector2D>
+#include <QVector>
+#include <QString>
 
+class XMLTablePrivate
+{
+public:
+    QVector<QString> columns;
+    QVector<QVector<QString> > data;
+    QString name;
+};
 
 /**
  * @brief Creates table with specified name.
  * @param name Name of new table
  */
-XMLTable::XMLTable(QString &name)
+XMLTable::XMLTable(QString &name) :
+    d_ptr(new XMLTablePrivate())
 {
-	this->name=name;
+    Q_D(XMLTable);
+
+    d->name=name;
+}
+
+XMLTable::~XMLTable()
+{
+
 }
 
 /**
@@ -17,7 +35,9 @@ XMLTable::XMLTable(QString &name)
  */
 QString XMLTable::getColumnName(int index)
 {
-	return columns[index];
+    Q_D(XMLTable);
+
+    return d->columns[index];
 }
 
 /**
@@ -28,7 +48,9 @@ QString XMLTable::getColumnName(int index)
  */
 QString XMLTable::getData(int row, int col)
 {
-	return data[row][col];
+    Q_D(XMLTable);
+
+    return d->data[row][col];
 }
 
 /**
@@ -38,7 +60,9 @@ QString XMLTable::getData(int row, int col)
  */
 void XMLTable::setColumnName(int index, QString &name)
 {
-	columns[index]=name;
+    Q_D(XMLTable);
+
+    d->columns[index]=name;
 }
 
 /**
@@ -49,7 +73,9 @@ void XMLTable::setColumnName(int index, QString &name)
  */
 void XMLTable::setData(int row, int col, QString &data)
 {
-	this->data[row][col]=data;
+    Q_D(XMLTable);
+
+    d->data[row][col]=data;
 }
 
 /**
@@ -57,7 +83,9 @@ void XMLTable::setData(int row, int col, QString &data)
  */
 void XMLTable::addColumn()
 {
-    columns.append("column" + QString("%1").arg(columns.count() + 1));
+    Q_D(XMLTable);
+
+    d->columns.append("column" + QString("%1").arg(d->columns.count() + 1));
 }
 
 /**
@@ -66,7 +94,9 @@ void XMLTable::addColumn()
  */
 void XMLTable::addColumn(QString &name)
 {
-	columns.append(name);
+    Q_D(XMLTable);
+
+    d->columns.append(name);
 }
 
 /**
@@ -75,7 +105,9 @@ void XMLTable::addColumn(QString &name)
  */
 void XMLTable::setTableName(QString &name)
 {
-	this->name=name;
+    Q_D(XMLTable);
+
+    d->name=name;
 }
 
 /**
@@ -84,7 +116,9 @@ void XMLTable::setTableName(QString &name)
  */
 QString XMLTable::getTableName()
 {
-	return this->name;
+    Q_D(XMLTable);
+
+    return d->name;
 }
 
 /**
@@ -93,7 +127,9 @@ QString XMLTable::getTableName()
  */
 int XMLTable::getColCount()
 {
-	return columns.size();
+    Q_D(XMLTable);
+
+    return d->columns.size();
 }
 
 /**
@@ -102,7 +138,9 @@ int XMLTable::getColCount()
  */
 int XMLTable::getRowCount()
 {
-	return data.size();
+    Q_D(XMLTable);
+
+    return d->data.size();
 }
 
 /**
@@ -110,6 +148,8 @@ int XMLTable::getRowCount()
  */
 void XMLTable::addRow()
 {
-	QVector<QString> row(columns.size());
-	this->data.append(row);
+    Q_D(XMLTable);
+
+    QVector<QString> row(d->columns.size());
+    d->data.append(row);
 }

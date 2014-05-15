@@ -1,4 +1,16 @@
 #include "dbtablemodel.h"
+#include "xmltable.h"
+
+class DbTableModelPrivate {
+public:
+    XMLTable *table;
+
+    virtual ~DbTableModelPrivate()
+    {
+        if(table)
+            delete table;
+    }
+};
 
 /**
  * @brief Creates new table model with name and size.
@@ -7,14 +19,22 @@
  * @param size Size of table (columns)
  */
 DbTableModel::DbTableModel(QObject *parent, QString *name,int size) :
-	QAbstractTableModel(parent)
+    QAbstractTableModel(parent),
+    d_ptr(new DbTableModelPrivate())
 {
-	table = new XMLTable(*name);
+    Q_D(DbTableModel);
+
+    d->table = new XMLTable(*name);
 	for(int i=0;i<size;i++)
 	{
-		table->addColumn();
+        d->table->addColumn();
 	}
-	table->addRow();
+    d->table->addRow();
+}
+
+DbTableModel::~DbTableModel()
+{
+
 }
 
 /**
@@ -25,7 +45,9 @@ DbTableModel::DbTableModel(QObject *parent, QString *name,int size) :
 int DbTableModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-    return table->getRowCount();
+    Q_D(const DbTableModel);
+
+    return d->table->getRowCount();
 }
 
 /**
@@ -36,7 +58,9 @@ int DbTableModel::rowCount(const QModelIndex &parent) const
 int DbTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-    return table->getColCount();
+    Q_D(const DbTableModel);
+
+    return d->table->getColCount();
 }
 
 /**
@@ -47,8 +71,10 @@ int DbTableModel::columnCount(const QModelIndex &parent) const
  */
 QVariant DbTableModel::data(const QModelIndex &index, int role) const
 {
+    Q_D(const DbTableModel);
+
     if(role == Qt::DisplayRole)
-        return table->getData(index.row(),index.column());
+        return d->table->getData(index.row(),index.column());
 
     return QVariant();
 }
@@ -62,11 +88,13 @@ QVariant DbTableModel::data(const QModelIndex &index, int role) const
  */
 QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    Q_D(const DbTableModel);
+
     if(role == Qt::DisplayRole)
     {
         if(orientation == Qt::Horizontal)
         {
-            return table->getColumnName(section);
+            return d->table->getColumnName(section);
         }
         else
         {

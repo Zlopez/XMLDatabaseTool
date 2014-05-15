@@ -1,10 +1,9 @@
 #ifndef XMLTABLE_H
 #define XMLTABLE_H
 
-#include <QVector2D>
-#include <QVector>
-#include <QString>
+#include <QScopedPointer>
 
+class XMLTablePrivate;
 /**
  * @brief Class that represents one xml database file.
  */
@@ -12,6 +11,8 @@ class XMLTable
 {
 public:
 	explicit XMLTable(QString &name);
+    virtual ~XMLTable();
+
 	QString getColumnName(int index);
 	QString getData(int row,int col);
 	void setColumnName(int index, QString &name);
@@ -20,15 +21,13 @@ public:
 	void addColumn(QString &name);
 	void setTableName(QString &name);
 	QString getTableName();
-	~XMLTable();
 	int getRowCount();
 	int getColCount();
 	void addRow();
 
 private:
-	QVector<QString> columns;
-	QVector<QVector<QString> > data;
-	QString name;
+    QScopedPointer<XMLTablePrivate> d_ptr;
+    Q_DECLARE_PRIVATE(XMLTable)
 };
 
 #endif // XMLTABLE_H
