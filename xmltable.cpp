@@ -71,7 +71,7 @@ void XMLTable::setColumnName(int index, QString &name)
  * @param col Index of column
  * @param data New data to add
  */
-void XMLTable::setData(int row, int col, QString &data)
+void XMLTable::setData(int row, int col, const QString &data)
 {
     Q_D(XMLTable);
 

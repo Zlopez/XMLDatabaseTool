@@ -16,7 +16,7 @@ public:
 	QString getColumnName(int index);
 	QString getData(int row,int col);
 	void setColumnName(int index, QString &name);
-	void setData(int row,int col, QString &data);
+	void setData(int row, int col, const QString &data);
 	void addColumn();
 	void addColumn(QString &name);
 	void setTableName(QString &name);

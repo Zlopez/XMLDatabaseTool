@@ -74,7 +74,9 @@ QVariant DbTableModel::data(const QModelIndex &index, int role) const
     Q_D(const DbTableModel);
 
     if(role == Qt::DisplayRole)
-        return d->table->getData(index.row(),index.column());
+			return d->table->getData(index.row(),index.column());
+		if(role == Qt::EditRole)
+			return d->table->getData(index.row(),index.column());
 
     return QVariant();
 }
@@ -103,4 +105,38 @@ QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int 
     }
 
     return QVariant();
+}
+
+/**
+ * @brief Return flag for index
+ * @param index index of cell
+ * @return flag
+ */
+Qt::ItemFlags DbTableModel::flags(const QModelIndex &index)
+{
+	Qt::ItemFlags flags = QAbstractTableModel::flags(index);
+	if(index.isValid())
+		return Qt::ItemIsEditable;
+	return flags;
+}
+
+/**
+ * @brief Sets data to specified value
+ * @param index index of cell
+ * @param value value to set
+ * @param role Display role
+ * @return true if edited
+ */
+bool DbTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	Q_D(DbTableModel);
+	if(index.isValid() && role == Qt::EditRole)
+	{
+		d->table->setData(index.row(),index.column(),value.toString());
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
