@@ -74,9 +74,9 @@ QVariant DbTableModel::data(const QModelIndex &index, int role) const
     Q_D(const DbTableModel);
 
     if(role == Qt::DisplayRole)
-			return d->table->getData(index.row(),index.column());
-		if(role == Qt::EditRole)
-			return d->table->getData(index.row(),index.column());
+        return d->table->getData(index.row(),index.column());
+    if(role == Qt::EditRole)
+        return d->table->getData(index.row(),index.column());
 
     return QVariant();
 }
@@ -92,7 +92,7 @@ QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int 
 {
     Q_D(const DbTableModel);
 
-    if(role == Qt::DisplayRole)
+    if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
         if(orientation == Qt::Horizontal)
         {
@@ -112,11 +112,11 @@ QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int 
  * @param index index of cell
  * @return flag
  */
-Qt::ItemFlags DbTableModel::flags(const QModelIndex &index)
+Qt::ItemFlags DbTableModel::flags(const QModelIndex &index) const
 {
 	Qt::ItemFlags flags = QAbstractTableModel::flags(index);
 	if(index.isValid())
-		return Qt::ItemIsEditable;
+        return Qt::ItemIsEditable | flags;
 	return flags;
 }
 

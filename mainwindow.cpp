@@ -31,8 +31,7 @@ void MainWindow::createNewTable(QString tableName,int columns)
 {
 	ui->databaseWidget->show();
 	ui->tablesTab->setTabText(ui->tablesTab->count()-1,tableName);
-	ui->tableView->setModel(new DbTableModel(ui->tab,&tableName,columns));
-	ui->tableView->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    ui->tableView->setModel(new DbTableModel(ui->tab,&tableName,columns));
 }
 
 MainWindow::~MainWindow()
