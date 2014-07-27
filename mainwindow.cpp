@@ -3,6 +3,8 @@
 #include "newtabledialog.h"
 #include "qmessagebox.h"
 #include "dbtablemodel.h"
+#include "tabwidget.h"
+#include <QtDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -11,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 	ui->databaseWidget->hide();
 	connect(ui->actionNew_table,SIGNAL(triggered()),this,SLOT(onNewTableActionClicked()));
+	ui->tablesTab->clear();
 }
 
 /**
@@ -30,8 +33,15 @@ void MainWindow::onNewTableActionClicked()
 void MainWindow::createNewTable(QString tableName,int columns)
 {
 	ui->databaseWidget->show();
-	ui->tablesTab->setTabText(ui->tablesTab->count()-1,tableName);
-    ui->tableView->setModel(new DbTableModel(ui->tab,&tableName,columns));
+
+	int i = ui->tablesTab->addTab(new TabWidget(this),tableName);
+
+	ui->tablesTab->setCurrentIndex(i);
+
+	TabWidget* widget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
+	DbTableModel* table=new DbTableModel(this,&tableName,columns);
+	widget->setModel(table);
+
 }
 
 MainWindow::~MainWindow()

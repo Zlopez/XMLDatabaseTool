@@ -17,13 +17,19 @@ SOURCES += main.cpp \
     xmlio.cpp \
     newtabledialog.cpp \
     dbtablemodel.cpp \
-    xmltable.cpp
+    xmltable.cpp \
+    tabwidget.cpp
 
 HEADERS  += mainwindow.h \
     xmlio.h \
     newtabledialog.h \
     dbtablemodel.h \
-    xmltable.h
+    xmltable.h \
+    ../buttondelegate.h \
+    tabwidget.h
 
 FORMS    += mainwindow.ui \
-    newtabledialog.ui
+    newtabledialog.ui \
+    tabwidget.ui
+
+QMAKE_CXXFLAGS += -std=c++11

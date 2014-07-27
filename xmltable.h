@@ -24,6 +24,11 @@ public:
 	int getRowCount();
 	int getColCount();
 	void addRow();
+	/**
+	 * @brief Deletes row by row index
+	 * @param row
+	 */
+	void deleteRow(int row);
 
 private:
     QScopedPointer<XMLTablePrivate> d_ptr;

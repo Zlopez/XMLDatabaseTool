@@ -153,3 +153,9 @@ void XMLTable::addRow()
     QVector<QString> row(d->columns.size());
     d->data.append(row);
 }
+
+void XMLTable::deleteRow(int row)
+{
+	Q_D(XMLTable);
+	d->data.removeAt(row);
+}

@@ -3,13 +3,13 @@
 
 class DbTableModelPrivate {
 public:
-    XMLTable *table;
+	XMLTable *table;
 
-    virtual ~DbTableModelPrivate()
-    {
-        if(table)
-            delete table;
-    }
+	virtual ~DbTableModelPrivate()
+	{
+			if(table)
+					delete table;
+	}
 };
 
 /**
@@ -22,14 +22,15 @@ DbTableModel::DbTableModel(QObject *parent, QString *name,int size) :
     QAbstractTableModel(parent),
     d_ptr(new DbTableModelPrivate())
 {
-    Q_D(DbTableModel);
+	Q_D(DbTableModel);
 
-    d->table = new XMLTable(*name);
+	d->table = new XMLTable(*name);
 	for(int i=0;i<size;i++)
 	{
         d->table->addColumn();
 	}
-    d->table->addRow();
+	d->table->addRow();
+
 }
 
 DbTableModel::~DbTableModel()
@@ -45,9 +46,9 @@ DbTableModel::~DbTableModel()
 int DbTableModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-    Q_D(const DbTableModel);
+	Q_D(const DbTableModel);
 
-    return d->table->getRowCount();
+	return d->table->getRowCount();
 }
 
 /**
@@ -58,9 +59,9 @@ int DbTableModel::rowCount(const QModelIndex &parent) const
 int DbTableModel::columnCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-    Q_D(const DbTableModel);
+	Q_D(const DbTableModel);
 
-    return d->table->getColCount();
+	return d->table->getColCount();
 }
 
 /**
@@ -71,14 +72,14 @@ int DbTableModel::columnCount(const QModelIndex &parent) const
  */
 QVariant DbTableModel::data(const QModelIndex &index, int role) const
 {
-    Q_D(const DbTableModel);
+	Q_D(const DbTableModel);
 
-    if(role == Qt::DisplayRole)
-        return d->table->getData(index.row(),index.column());
-    if(role == Qt::EditRole)
-        return d->table->getData(index.row(),index.column());
+	if(role == Qt::DisplayRole)
+			return d->table->getData(index.row(),index.column());
+	if(role == Qt::EditRole)
+			return d->table->getData(index.row(),index.column());
 
-    return QVariant();
+	return QVariant();
 }
 
 /**
@@ -90,21 +91,21 @@ QVariant DbTableModel::data(const QModelIndex &index, int role) const
  */
 QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    Q_D(const DbTableModel);
+	Q_D(const DbTableModel);
 
-    if(role == Qt::DisplayRole || role == Qt::EditRole)
-    {
-        if(orientation == Qt::Horizontal)
-        {
-            return d->table->getColumnName(section);
-        }
-        else
-        {
-            return section;
-        }
-    }
+	if(role == Qt::DisplayRole || role == Qt::EditRole)
+	{
+			if(orientation == Qt::Horizontal)
+			{
+					return d->table->getColumnName(section);
+			}
+			else
+			{
+					return section;
+			}
+	}
 
-    return QVariant();
+	return QVariant();
 }
 
 /**
@@ -139,4 +140,57 @@ bool DbTableModel::setData(const QModelIndex &index, const QVariant &value, int 
 	{
 		return false;
 	}
+}
+
+/**
+ * @brief Delete selected row
+ * @param index
+ */
+void DbTableModel::deleteRow(QItemSelectionModel* selectionModel)
+{
+	if(!selectionModel->selection().isEmpty())
+	{
+		QModelIndexList selection = selectionModel->selectedRows();
+		removeRows(selection.first().row(), selection.last().row() - selection.first().row());
+	}
+}
+
+/**
+ * @brief Inserts new row
+ */
+void DbTableModel::insertRow()
+{
+	QAbstractItemModel::insertRow(rowCount()-1);
+}
+
+bool DbTableModel::insertRows(int row, int count, const QModelIndex &parent)
+{
+	Q_D(DbTableModel);
+
+	beginInsertRows(parent,row,row+count-1);
+	d->table->addRow();
+	endInsertRows();
+
+	return true;
+}
+
+/**
+ * @brief Overriden method for removing rows.
+ * @param row Begin row for removing
+ * @param count Count of rows to be removed
+ * @param parent
+ * @return boolean
+ */
+bool DbTableModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+	Q_D(DbTableModel);
+
+	beginRemoveRows(parent,row,row+count);
+	for(int i = 0;i<count;i++)
+	{
+		d->table->deleteRow(row);
+	}
+	endRemoveRows();
+
+	return true;
 }
