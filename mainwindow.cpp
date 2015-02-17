@@ -13,16 +13,43 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 	ui->databaseWidget->hide();
 	connect(ui->actionNew_table,SIGNAL(triggered()),this,SLOT(onNewTableActionClicked()));
+    connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(onExitActionClicked()));
+    connect(ui->actionOpen_database,SIGNAL(triggered()),this,SLOT(onLoadDatabaseActionClicked()));
+    connect(ui->actionSave_database,SIGNAL(triggered()),this,SLOT(onSaveDatabaseActionClicked()));
 	ui->tablesTab->clear();
 }
 
 /**
- * @brief Open dialog for new table.
+ * @brief Shows dialog for new table.
  */
 void MainWindow::onNewTableActionClicked()
 {
 	NewTableDialog *dialog = new NewTableDialog(this);
 	dialog->show();
+}
+
+/**
+ * @brief Exit application.
+ */
+void MainWindow::onExitActionClicked()
+{
+    exit(0);
+}
+
+/**
+ * @brief Shows dialog for loading database.
+ */
+void MainWindow::onLoadDatabaseActionClicked()
+{
+
+}
+
+/**
+ * @brief Saves currently opened database.
+ */
+void MainWindow::onSaveDatabaseActionClicked()
+{
+
 }
 
 /**

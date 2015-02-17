@@ -18,6 +18,12 @@ public:
 public slots:
     void onNewTableActionClicked();
     void createNewTable(QString,int);
+    void onExitActionClicked();
+    void onLoadDatabaseActionClicked();
+    void onSaveDatabaseActionClicked();
+
+signals:
+    void saveCurrentDatabase();
 
 private:
     Ui::MainWindow *ui;

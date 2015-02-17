@@ -195,6 +195,11 @@
      <string>File</string>
     </property>
     <addaction name="actionNew_table"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_database"/>
+    <addaction name="actionSave_database"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -213,6 +218,33 @@
    </property>
    <property name="toolTip">
     <string>Creates new table</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen_database">
+   <property name="text">
+    <string>Open database...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionSave_database">
+   <property name="text">
+    <string>Save database</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+X</string>
    </property>
   </action>
  </widget>
