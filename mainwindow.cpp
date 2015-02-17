@@ -37,6 +37,7 @@ void MainWindow::createNewTable(QString tableName,int columns)
 	int i = ui->tablesTab->addTab(new TabWidget(this),tableName);
 
 	ui->tablesTab->setCurrentIndex(i);
+    ui->tablesTab->setMinimumWidth(300);
 
 	TabWidget* widget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
 	DbTableModel* table=new DbTableModel(this,&tableName,columns);

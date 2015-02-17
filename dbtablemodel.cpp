@@ -150,9 +150,12 @@ void DbTableModel::deleteRow(QItemSelectionModel* selectionModel)
 {
 	if(!selectionModel->selection().isEmpty())
 	{
-		QModelIndexList selection = selectionModel->selectedRows();
-		removeRows(selection.first().row(), selection.last().row() - selection.first().row());
-	}
+        if(!selectionModel->selectedRows().isEmpty())
+        {
+            QModelIndexList selection = selectionModel->selectedRows();
+            removeRows(selection.first().row(), selection.last().row() - selection.first().row());
+        }
+    }
 }
 
 /**
