@@ -23,11 +23,12 @@ public:
 signals:
     void columnAdded(int index);
     void columnRemoved(int index);
-    void columnNameChanged(const QString *name);
+    void columnNameChanged(int index, const QString *name);
 
 public slots:
     void onAddButtonClicked();
     void onRemoveButtonClicked();
+    void onColumnNameChanged();
 
 private:
     Ui::columnWidget *ui;

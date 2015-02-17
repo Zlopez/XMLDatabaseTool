@@ -69,15 +69,17 @@ void MainWindow::createNewTable(QString tableName,int columns)
 	DbTableModel* table=new DbTableModel(this,&tableName,columns);
 	widget->setModel(table);
 
-    ColumnWidget* columnWidget = new ColumnWidget(this);
-
-    for(int i = 0;i < columns;i++)
+    if(ui->colNavigator->layout()->isEmpty())
     {
-        columnWidget->addColumn();
+        ColumnWidget* columnWidget = new ColumnWidget(this);
+
+        for(int i = 0;i < columns;i++)
+        {
+            columnWidget->addColumn();
+        }
+
+        ui->colNavigator->layout()->addWidget(columnWidget);
     }
-
-    ui->colNavigator->layout()->addWidget(columnWidget);
-
     ui->databaseWidget->show();
 
 

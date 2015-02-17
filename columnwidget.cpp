@@ -7,6 +7,9 @@ ColumnWidget::ColumnWidget(QWidget *parent) :
     ui(new Ui::columnWidget)
 {
     ui->setupUi(this);
+    connect(ui->addColButton,&QPushButton::clicked,this,&ColumnWidget::onAddButtonClicked);
+    connect(ui->delColButton,&QPushButton::clicked,this,&ColumnWidget::onRemoveButtonClicked);
+    connect(this,&ColumnWidget::objectNameChanged,this,&ColumnWidget::onColumnNameChanged);
 }
 
 ColumnWidget::~ColumnWidget()
@@ -19,7 +22,9 @@ ColumnWidget::~ColumnWidget()
  */
 void ColumnWidget::addColumn()
 {
-    ui->listWidget->addItem("column" + QString("%1").arg(ui->listWidget->count() + 1));
+    QListWidgetItem* item = new QListWidgetItem("column" + QString("%1").arg(ui->listWidget->count() + 1));
+    item->setFlags(item->flags () | Qt::ItemIsEditable);
+    ui->listWidget->addItem(item);
 }
 
 /**
@@ -27,7 +32,9 @@ void ColumnWidget::addColumn()
  */
 void ColumnWidget::addColumn(int index)
 {
-    ui->listWidget->insertItem(index, "column" + QString("%1").arg(index + 1));
+    QListWidgetItem* item = new QListWidgetItem("column" + QString("%1").arg(index + 2));
+    item->setFlags(item->flags () | Qt::ItemIsEditable);
+    ui->listWidget->insertItem(index + 1, item);
     emit columnAdded(index);
 }
 
@@ -38,7 +45,7 @@ void ColumnWidget::addColumn(int index)
 void ColumnWidget::removeColumn(int index)
 {
     QListWidgetItem* item = ui->listWidget->item(index);
-    ui->listWidget->removeItemWidget(item);
+    delete item;
 
     emit columnRemoved(index);
 }
@@ -48,7 +55,7 @@ void ColumnWidget::removeColumn(int index)
  */
 void ColumnWidget::onAddButtonClicked()
 {
-    addColumn(ui->listWidget->selectionModel()->selectedRows().first().row());
+    addColumn(ui->listWidget->currentRow());
 }
 
 /**
@@ -56,6 +63,18 @@ void ColumnWidget::onAddButtonClicked()
  */
 void ColumnWidget::onRemoveButtonClicked()
 {
-    removeColumn(ui->listWidget->selectionModel()->selectedRows().first().row());
+    removeColumn(ui->listWidget->currentRow());
 }
+
+/**
+ * @brief Get text and index of column and emits signal for column name changed
+ */
+void ColumnWidget::onColumnNameChanged()
+{
+    int index = ui->listWidget->currentRow();
+    QString name = ui->listWidget->currentItem()->text();
+
+    emit columnNameChanged(index,&name);
+}
+
 
