@@ -71,6 +71,11 @@ void MainWindow::createNewTable(QString tableName,int columns)
 
     ColumnWidget* columnWidget = new ColumnWidget(this);
 
+    for(int i = 0;i < columns;i++)
+    {
+        columnWidget->addColumn();
+    }
+
     ui->colNavigator->layout()->addWidget(columnWidget);
 
     ui->databaseWidget->show();
