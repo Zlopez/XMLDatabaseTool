@@ -8,7 +8,7 @@ public:
 	virtual ~DbTableModelPrivate()
 	{
 			if(table)
-					delete table;
+                delete table;
 	}
 };
 

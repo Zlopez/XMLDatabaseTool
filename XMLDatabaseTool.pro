@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     newtabledialog.cpp \
     dbtablemodel.cpp \
     xmltable.cpp \
-    tabwidget.cpp
+    tabwidget.cpp \
+    columnwidget.cpp
 
 HEADERS  += mainwindow.h \
     xmlio.h \
@@ -26,10 +27,12 @@ HEADERS  += mainwindow.h \
     dbtablemodel.h \
     xmltable.h \
     ../buttondelegate.h \
-    tabwidget.h
+    tabwidget.h \
+    columnwidget.h
 
 FORMS    += mainwindow.ui \
     newtabledialog.ui \
-    tabwidget.ui
+    tabwidget.ui \
+    columnwidget.ui
 
 QMAKE_CXXFLAGS += -std=c++11

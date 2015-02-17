@@ -4,6 +4,7 @@
 #include "qmessagebox.h"
 #include "dbtablemodel.h"
 #include "tabwidget.h"
+#include "columnwidget.h"
 #include <QtDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -59,8 +60,6 @@ void MainWindow::onSaveDatabaseActionClicked()
  */
 void MainWindow::createNewTable(QString tableName,int columns)
 {
-	ui->databaseWidget->show();
-
 	int i = ui->tablesTab->addTab(new TabWidget(this),tableName);
 
 	ui->tablesTab->setCurrentIndex(i);
@@ -69,6 +68,13 @@ void MainWindow::createNewTable(QString tableName,int columns)
 	TabWidget* widget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
 	DbTableModel* table=new DbTableModel(this,&tableName,columns);
 	widget->setModel(table);
+
+    ColumnWidget* columnWidget = new ColumnWidget(this);
+
+    ui->colNavigator->layout()->addWidget(columnWidget);
+
+    ui->databaseWidget->show();
+
 
 }
 
