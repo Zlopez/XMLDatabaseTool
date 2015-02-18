@@ -24,6 +24,9 @@ public:
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool insertColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
+    bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override;
 
 	/**
 	 * @brief Overriden method for removing rows.
@@ -51,6 +54,9 @@ public slots:
 	 * @brief Inserts new row
 	 */
 	void insertRow();
+    void onColumnAdded(int index, const QString name);
+    void onColumnRemoved(int index);
+    void onColumnNameChanged(int index, const QString name);
 
 };
 

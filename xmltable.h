@@ -15,10 +15,12 @@ public:
 
 	QString getColumnName(int index);
 	QString getData(int row,int col);
-	void setColumnName(int index, QString &name);
+    void setColumnName(int index, QString name);
 	void setData(int row, int col, const QString &data);
 	void addColumn();
 	void addColumn(QString &name);
+    void insertColumn(int index, QString name);
+    void removeColumn(int index);
 	void setTableName(QString &name);
 	QString getTableName();
 	int getRowCount();

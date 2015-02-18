@@ -1,5 +1,6 @@
 #include "dbtablemodel.h"
 #include "xmltable.h"
+#include <QDebug>
 
 class DbTableModelPrivate {
 public:
@@ -109,6 +110,30 @@ QVariant DbTableModel::headerData(int section, Qt::Orientation orientation, int 
 }
 
 /**
+ * @brief Sets new name to column
+ * @param section
+ * @param orientation
+ * @param value
+ * @param role
+ * @return
+ */
+bool DbTableModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role)
+{
+    Q_D(DbTableModel);
+
+    if(role == Qt::EditRole)
+    {
+        if(orientation == Qt::Horizontal)
+        {
+            d->table->setColumnName(section,value.toString());
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
  * @brief Return flag for index
  * @param index index of cell
  * @return flag
@@ -166,6 +191,13 @@ void DbTableModel::insertRow()
 	QAbstractItemModel::insertRow(rowCount()-1);
 }
 
+/**
+ * @brief Inserts multiple rows
+ * @param row
+ * @param count
+ * @param parent
+ * @return
+ */
 bool DbTableModel::insertRows(int row, int count, const QModelIndex &parent)
 {
 	Q_D(DbTableModel);
@@ -189,11 +221,96 @@ bool DbTableModel::removeRows(int row, int count, const QModelIndex &parent)
 	Q_D(DbTableModel);
 
 	beginRemoveRows(parent,row,row+count);
-	for(int i = 0;i<count;i++)
+    for(int i = row;i<row+count+1;i++)
 	{
-		d->table->deleteRow(row);
+        d->table->deleteRow(i);
 	}
 	endRemoveRows();
 
 	return true;
+}
+
+/**
+ * @brief Overriden method for inserting new column.
+ * @param column
+ * @param parent
+ * @return boolean
+ */
+bool DbTableModel::insertColumns(int column, int count, const QModelIndex &parent)
+{
+    Q_D(DbTableModel);
+
+    beginInsertColumns(parent,column,column+count);
+    for(int i = column;i <= column + count;i++)
+    {
+        d->table->insertColumn(i, "");
+    }
+    endInsertColumns();
+
+    return true;
+}
+
+/**
+ * @brief Overriden method for removing column
+ * @param column
+ * @param parent
+ * @return
+ */
+bool DbTableModel::removeColumns(int column, int count, const QModelIndex &parent)
+{
+    Q_D(DbTableModel);
+
+    beginRemoveColumns(parent,column,column+count);
+    for(int i = column;i <= column + count;i++)
+    {
+        d->table->removeColumn(i);
+    }
+    endRemoveColumns();
+
+    return true;
+}
+
+/**
+ * @brief Adds new column
+ * @param index
+ */
+void DbTableModel::onColumnAdded(int index, const QString name)
+{
+
+    if(index >= 0 && index <= columnCount())
+    {
+        insertColumns(index+1,0);
+        setHeaderData(index+1,Qt::Horizontal,name);
+    }
+}
+
+/**
+ * @brief Removes column
+ * @param index
+ */
+void DbTableModel::onColumnRemoved(int index)
+{
+    if(index >= 0 && index < columnCount())
+    {
+        qDebug() << columnCount();
+        if(columnCount() > 1)
+        {
+            removeColumns(index,0);
+        }
+    }
+}
+
+/**
+ * @brief Changes name of column
+ * @param index
+ * @param name
+ */
+void DbTableModel::onColumnNameChanged(int index, const QString name)
+{
+    Q_D(DbTableModel);
+
+    if(index >= 0 && index < columnCount())
+    {
+        d->table->setColumnName(index, name);
+    }
 }

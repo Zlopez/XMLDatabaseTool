@@ -18,17 +18,19 @@ public:
     ~ColumnWidget();
     void addColumn();
     void addColumn(int index);
+    void addColumn(int index, const QString name);
     void removeColumn(int index);
 
 signals:
-    void columnAdded(int index);
+    void columnAdded(int index, const QString name);
     void columnRemoved(int index);
-    void columnNameChanged(int index, const QString *name);
+    void columnNameChanged(int index, const QString name);
 
 public slots:
     void onAddButtonClicked();
     void onRemoveButtonClicked();
     void onColumnNameChanged();
+    void onTableChange(QList<QString>* columns);
 
 private:
     Ui::columnWidget *ui;

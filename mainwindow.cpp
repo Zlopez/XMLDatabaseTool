@@ -65,13 +65,18 @@ void MainWindow::createNewTable(QString tableName,int columns)
 	ui->tablesTab->setCurrentIndex(i);
     ui->tablesTab->setMinimumWidth(300);
 
-	TabWidget* widget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
+    TabWidget* tabWidget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
 	DbTableModel* table=new DbTableModel(this,&tableName,columns);
-	widget->setModel(table);
+    tabWidget->setModel(table);
 
     if(ui->colNavigator->layout()->isEmpty())
     {
         ColumnWidget* columnWidget = new ColumnWidget(this);
+
+        connect(columnWidget,&ColumnWidget::columnAdded,tabWidget,&TabWidget::onColumnAdded);
+        connect(columnWidget,&ColumnWidget::columnRemoved,tabWidget,&TabWidget::onColumnRemoved);
+        connect(columnWidget,&ColumnWidget::columnNameChanged,tabWidget,&TabWidget::onColumnNameChanged);
+        //connect(ui->tablesTab,SIGNAL(currentChanged),columnWidget,&ColumnWidget::onTableChange);
 
         for(int i = 0;i < columns;i++)
         {

@@ -58,7 +58,7 @@ QString XMLTable::getData(int row, int col)
  * @param index Index of column
  * @param name New name of column
  */
-void XMLTable::setColumnName(int index, QString &name)
+void XMLTable::setColumnName(int index, QString name)
 {
     Q_D(XMLTable);
 
@@ -85,7 +85,7 @@ void XMLTable::addColumn()
 {
     Q_D(XMLTable);
 
-    d->columns.append("column" + QString("%1").arg(d->columns.count() + 1));
+    d->columns.append("column");
 }
 
 /**
@@ -97,6 +97,45 @@ void XMLTable::addColumn(QString &name)
     Q_D(XMLTable);
 
     d->columns.append(name);
+}
+
+/**
+ * @brief Inserts new column with specified name on specified index.
+ * @param index
+ * @param name
+ */
+void XMLTable::insertColumn(int index, QString name)
+{
+    Q_D(XMLTable);
+
+    d->columns.insert(d->columns.begin() + index + 1,name);
+
+    for(int i = 0;i < d->data.count();i++)
+    {
+        if(index + 1 >= d->data[i].count())
+        {
+            d->data[i].append("");
+        }
+        else
+        {
+            d->data[i].insert(index + 1,"");
+        }
+    }
+}
+
+/**
+ * @brief Removes column at specified index
+ * @param index
+ */
+void XMLTable::removeColumn(int index)
+{
+    Q_D(XMLTable);
+
+    d->columns.remove(index);
+    for(int i = 0;i < d->data.count();i++)
+    {
+        d->data[i].remove(index);
+    }
 }
 
 /**

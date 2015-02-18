@@ -34,12 +34,18 @@ signals:
 	 * @param index
 	 */
 	void delSelectedRow(QItemSelectionModel* selection);
+    void columnAdded(int index, const QString name);
+    void columnRemoved(int index);
+    void columnNameChanged(int index, const QString name);
 
 public slots:
 	/**
 	 * @brief This slot is used for handling delete row button signal
 	 */
 	void delRow();
+    void onColumnAdded(int index, const QString name);
+    void onColumnRemoved(int index);
+    void onColumnNameChanged(int index, const QString name);
 };
 
 #endif // TABWIDGET_H

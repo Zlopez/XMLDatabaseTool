@@ -9,7 +9,7 @@ ColumnWidget::ColumnWidget(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->addColButton,&QPushButton::clicked,this,&ColumnWidget::onAddButtonClicked);
     connect(ui->delColButton,&QPushButton::clicked,this,&ColumnWidget::onRemoveButtonClicked);
-    connect(this,&ColumnWidget::objectNameChanged,this,&ColumnWidget::onColumnNameChanged);
+    connect(ui->listWidget,&QListWidget::itemChanged,this,&ColumnWidget::onColumnNameChanged);
 }
 
 ColumnWidget::~ColumnWidget()
@@ -22,7 +22,7 @@ ColumnWidget::~ColumnWidget()
  */
 void ColumnWidget::addColumn()
 {
-    QListWidgetItem* item = new QListWidgetItem("column" + QString("%1").arg(ui->listWidget->count() + 1));
+    QListWidgetItem* item = new QListWidgetItem("column");
     item->setFlags(item->flags () | Qt::ItemIsEditable);
     ui->listWidget->addItem(item);
 }
@@ -32,10 +32,20 @@ void ColumnWidget::addColumn()
  */
 void ColumnWidget::addColumn(int index)
 {
-    QListWidgetItem* item = new QListWidgetItem("column" + QString("%1").arg(index + 2));
+    if(index >= 0 && index <= ui->listWidget->count())
+    {
+        QListWidgetItem* item = new QListWidgetItem("column");
+        item->setFlags(item->flags () | Qt::ItemIsEditable);
+        ui->listWidget->insertItem(index + 1, item);
+        emit columnAdded(index,item->text());
+    }
+}
+
+void ColumnWidget::addColumn(int index, const QString name)
+{
+    QListWidgetItem* item = new QListWidgetItem(name);
     item->setFlags(item->flags () | Qt::ItemIsEditable);
-    ui->listWidget->insertItem(index + 1, item);
-    emit columnAdded(index);
+    ui->listWidget->insertItem(index, item);
 }
 
 /**
@@ -44,10 +54,13 @@ void ColumnWidget::addColumn(int index)
  */
 void ColumnWidget::removeColumn(int index)
 {
-    QListWidgetItem* item = ui->listWidget->item(index);
-    delete item;
+    if(ui->listWidget->count() > 1)
+    {
+        QListWidgetItem* item = ui->listWidget->item(index);
+        delete item;
 
-    emit columnRemoved(index);
+        emit columnRemoved(index);
+    }
 }
 
 /**
@@ -74,7 +87,21 @@ void ColumnWidget::onColumnNameChanged()
     int index = ui->listWidget->currentRow();
     QString name = ui->listWidget->currentItem()->text();
 
-    emit columnNameChanged(index,&name);
+    emit columnNameChanged(index,name);
+}
+
+/**
+ * @brief Change content of column widget on table change
+ * @param columns
+ */
+void ColumnWidget::onTableChange(QList<QString> *columns)
+{
+    ui->listWidget->clear();
+
+    for(int i = 0;i < columns->size();i++)
+    {
+        addColumn(i,columns->at(i));
+    }
 }
 
 
