@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "columnwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,12 +22,14 @@ public slots:
     void onExitActionClicked();
     void onLoadDatabaseActionClicked();
     void onSaveDatabaseActionClicked();
+    void onTableChanged();
 
 signals:
     void saveCurrentDatabase();
 
 private:
     Ui::MainWindow *ui;
+    ColumnWidget* columnWidget;
 };
 
 #endif // MAINWINDOW_H

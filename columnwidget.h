@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QList>
 #include <QString>
+#include <QVector>
 
 namespace Ui {
 class columnWidget;
@@ -20,6 +21,7 @@ public:
     void addColumn(int index);
     void addColumn(int index, const QString name);
     void removeColumn(int index);
+    void setColumns(QVector<QString> columns);
 
 signals:
     void columnAdded(int index, const QString name);

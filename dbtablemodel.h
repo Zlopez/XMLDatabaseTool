@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <QScopedPointer>
 #include <QItemSelectionModel>
+#include <QVector>
 
 class DbTableModelPrivate;
 
@@ -27,6 +28,7 @@ public:
     bool insertColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
     bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex()) override;
     bool setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role = Qt::EditRole) override;
+    QVector<QString> columns();
 
 	/**
 	 * @brief Overriden method for removing rows.

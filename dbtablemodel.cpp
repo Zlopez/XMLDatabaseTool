@@ -324,3 +324,21 @@ void DbTableModel::onColumnNameChanged(int index, const QString name)
         d->table->setColumnName(index, name);
     }
 }
+
+/**
+ * @brief Returns all columns in table
+ * @return
+ */
+QVector<QString> DbTableModel::columns()
+{
+    Q_D(DbTableModel);
+
+    QVector<QString> columns;
+
+    for(int i = 0; i < d->table->getColCount();i++)
+    {
+        columns.push_back(d->table->getColumnName(i));
+    }
+
+    return columns;
+}

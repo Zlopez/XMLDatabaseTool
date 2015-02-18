@@ -45,7 +45,15 @@ void ColumnWidget::addColumn(int index, const QString name)
 {
     QListWidgetItem* item = new QListWidgetItem(name);
     item->setFlags(item->flags () | Qt::ItemIsEditable);
-    ui->listWidget->insertItem(index, item);
+
+    if(index > ui->listWidget->size().width())
+    {
+        ui->listWidget->insertItem(index, item);
+    }
+    else
+    {
+        ui->listWidget->addItem(item);
+    }
 }
 
 /**
@@ -101,6 +109,20 @@ void ColumnWidget::onTableChange(QList<QString> *columns)
     for(int i = 0;i < columns->size();i++)
     {
         addColumn(i,columns->at(i));
+    }
+}
+
+/**
+ * @brief Sets all columns names
+ * @param columns
+ */
+void ColumnWidget::setColumns(QVector<QString> columns)
+{
+    ui->listWidget->clear();
+
+    for(int i = 0;i < columns.size();i++)
+    {
+        addColumn(i,columns[i]);
     }
 }
 

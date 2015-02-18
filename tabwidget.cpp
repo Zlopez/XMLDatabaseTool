@@ -61,3 +61,22 @@ void TabWidget::onColumnNameChanged(int index, const QString name)
 {
     emit columnNameChanged(index,name);
 }
+
+/**
+ * @brief Returns all columns in Db table model
+ * @return
+ */
+QVector<QString> TabWidget::columns()
+{
+    return ((DbTableModel*)ui->tableView->model())->columns();
+}
+
+/**
+ * @brief Returns current model of table
+ * @return
+ */
+DbTableModel* TabWidget::model()
+{
+    DbTableModel* model = (DbTableModel*)ui->tableView->model();
+    return model;
+}

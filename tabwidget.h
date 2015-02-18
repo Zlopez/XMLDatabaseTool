@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QModelIndex>
 #include <QItemSelectionModel>
+#include <QVector>
+#include <QString>
 
 class DbTableModel;
 
@@ -24,6 +26,8 @@ public:
 	 * @param model model to set
 	 */
 	void setModel(DbTableModel *model);
+    DbTableModel *model();
+    QVector<QString> columns();
 
 private:
 	Ui::TabWidget *ui;

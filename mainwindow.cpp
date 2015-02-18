@@ -4,12 +4,12 @@
 #include "qmessagebox.h"
 #include "dbtablemodel.h"
 #include "tabwidget.h"
-#include "columnwidget.h"
 #include <QtDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
-	ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    columnWidget(nullptr)
 {
 	ui->setupUi(this);
 	ui->databaseWidget->hide();
@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionExit,SIGNAL(triggered()),this,SLOT(onExitActionClicked()));
     connect(ui->actionOpen_database,SIGNAL(triggered()),this,SLOT(onLoadDatabaseActionClicked()));
     connect(ui->actionSave_database,SIGNAL(triggered()),this,SLOT(onSaveDatabaseActionClicked()));
+    connect(ui->tablesTab,SIGNAL(currentChanged(int)),this,SLOT(onTableChanged()));
 	ui->tablesTab->clear();
 }
 
@@ -60,23 +61,10 @@ void MainWindow::onSaveDatabaseActionClicked()
  */
 void MainWindow::createNewTable(QString tableName,int columns)
 {
-	int i = ui->tablesTab->addTab(new TabWidget(this),tableName);
-
-	ui->tablesTab->setCurrentIndex(i);
-    ui->tablesTab->setMinimumWidth(300);
-
-    TabWidget* tabWidget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
-	DbTableModel* table=new DbTableModel(this,&tableName,columns);
-    tabWidget->setModel(table);
 
     if(ui->colNavigator->layout()->isEmpty())
     {
-        ColumnWidget* columnWidget = new ColumnWidget(this);
-
-        connect(columnWidget,&ColumnWidget::columnAdded,tabWidget,&TabWidget::onColumnAdded);
-        connect(columnWidget,&ColumnWidget::columnRemoved,tabWidget,&TabWidget::onColumnRemoved);
-        connect(columnWidget,&ColumnWidget::columnNameChanged,tabWidget,&TabWidget::onColumnNameChanged);
-        //connect(ui->tablesTab,SIGNAL(currentChanged),columnWidget,&ColumnWidget::onTableChange);
+        columnWidget = new ColumnWidget(this);
 
         for(int i = 0;i < columns;i++)
         {
@@ -85,9 +73,41 @@ void MainWindow::createNewTable(QString tableName,int columns)
 
         ui->colNavigator->layout()->addWidget(columnWidget);
     }
+
+	int i = ui->tablesTab->addTab(new TabWidget(this),tableName);
+
+    TabWidget* tabWidget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
+    DbTableModel* table=new DbTableModel(this,&tableName,columns);
+    tabWidget->setModel(table);
+
+	ui->tablesTab->setCurrentIndex(i);
+    ui->tablesTab->setMinimumWidth(300);
+
+
     ui->databaseWidget->show();
 
 
+}
+
+/**
+ * @brief Remaps signals and slots on table change
+ */
+void MainWindow::onTableChanged()
+{
+
+    if(columnWidget != nullptr)
+    {
+        columnWidget->disconnect();
+        TabWidget* tabWidget = (TabWidget*)ui->tablesTab->currentWidget();
+        if(tabWidget->model() != nullptr)
+        {
+            columnWidget->setColumns(tabWidget->columns());
+        }
+
+        connect(columnWidget,&ColumnWidget::columnAdded,tabWidget,&TabWidget::onColumnAdded,Qt::UniqueConnection);
+        connect(columnWidget,&ColumnWidget::columnRemoved,tabWidget,&TabWidget::onColumnRemoved,Qt::UniqueConnection);
+        connect(columnWidget,&ColumnWidget::columnNameChanged,tabWidget,&TabWidget::onColumnNameChanged,Qt::UniqueConnection);
+    }
 }
 
 MainWindow::~MainWindow()
