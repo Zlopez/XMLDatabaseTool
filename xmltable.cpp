@@ -108,7 +108,14 @@ void XMLTable::insertColumn(int index, QString name)
 {
     Q_D(XMLTable);
 
-    d->columns.insert(d->columns.begin() + index + 1,name);
+    if(index >= d->columns.size())
+    {
+        d->columns.append(name);
+    }
+    else
+    {
+        d->columns.insert(d->columns.begin() + index + 1,name);
+    }
 
     for(int i = 0;i < d->data.count();i++)
     {

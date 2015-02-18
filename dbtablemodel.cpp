@@ -121,10 +121,20 @@ bool DbTableModel::setHeaderData(int section, Qt::Orientation orientation, const
 {
     Q_D(DbTableModel);
 
+    QString name;
+
     if(role == Qt::EditRole)
     {
         if(orientation == Qt::Horizontal)
         {
+            for(int i = section; i < columnCount();i++)
+            {
+                if(i + 1 < columnCount())
+                {
+                    name = d->table->getColumnName(i);
+                    d->table->setColumnName(i+1,name);
+                }
+            }
             d->table->setColumnName(section,value.toString());
             return true;
         }
@@ -277,7 +287,7 @@ bool DbTableModel::removeColumns(int column, int count, const QModelIndex &paren
 void DbTableModel::onColumnAdded(int index, const QString name)
 {
 
-    if(index >= 0 && index <= columnCount())
+    if(index >= 0 && index < columnCount())
     {
         insertColumns(index+1,0);
         setHeaderData(index+1,Qt::Horizontal,name);
