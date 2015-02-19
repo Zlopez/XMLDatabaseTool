@@ -2,6 +2,7 @@
 #include <QVector2D>
 #include <QVector>
 #include <QString>
+#include <QDebug>
 
 class XMLTablePrivate
 {
@@ -84,6 +85,7 @@ void XMLTable::setData(int row, int col, const QString &data)
 void XMLTable::addColumn()
 {
     Q_D(XMLTable);
+    qDebug() << "Column added.";
 
     d->columns.append("column");
 }
@@ -95,6 +97,7 @@ void XMLTable::addColumn()
 void XMLTable::addColumn(QString &name)
 {
     Q_D(XMLTable);
+    qDebug() << "Column added.";
 
     d->columns.append(name);
 }

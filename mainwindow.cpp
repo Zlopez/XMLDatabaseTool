@@ -74,13 +74,13 @@ void MainWindow::createNewTable(QString tableName,int columns)
         ui->colNavigator->layout()->addWidget(columnWidget);
     }
 
-	int i = ui->tablesTab->addTab(new TabWidget(this),tableName);
-
-    TabWidget* tabWidget=static_cast<TabWidget*>(ui->tablesTab->currentWidget());
+    TabWidget* tabWidget=new TabWidget(ui->tablesTab);
     DbTableModel* table=new DbTableModel(this,&tableName,columns);
     tabWidget->setModel(table);
 
-	ui->tablesTab->setCurrentIndex(i);
+    int i = ui->tablesTab->addTab(tabWidget,tableName);
+
+    ui->tablesTab->setCurrentIndex(i);
     ui->tablesTab->setMinimumWidth(300);
 
 
@@ -98,7 +98,7 @@ void MainWindow::onTableChanged()
     if(columnWidget != nullptr)
     {
         columnWidget->disconnect();
-        TabWidget* tabWidget = (TabWidget*)ui->tablesTab->currentWidget();
+        TabWidget* tabWidget = static_cast<TabWidget*>(ui->tablesTab->currentWidget());
         if(tabWidget->model() != nullptr)
         {
             columnWidget->setColumns(tabWidget->columns());

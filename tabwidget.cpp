@@ -8,13 +8,13 @@ TabWidget::TabWidget(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::TabWidget)
 {
-	qDebug() << "contructor";
 	ui->setupUi(this);
 }
 
 void TabWidget::setModel(DbTableModel *model)
 {
 	ui->tableView->setModel(model);
+    qDebug() << "TabWidget: Model set.";
 
 	connect(ui->addRowButton,&QPushButton::clicked,static_cast<DbTableModel*>(ui->tableView->model()),&DbTableModel::insertRow);
 	connect(ui->deleteRowButton,&QPushButton::clicked,this,&TabWidget::delRow);
